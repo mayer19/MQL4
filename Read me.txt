@@ -1,0 +1,4 @@
+This Expert Advisors are only for learning propose. If you use it you may lose money. Feel fry to use it and improve it! But don't forget to backtest it before.
+Don't use metatraders robot with with real money account or you may lose.
+
+All the indicators are built-ins or where downloaded from mql comunity. 
