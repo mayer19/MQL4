@@ -1,5 +1,5 @@
 //---- input parameters
-
+//MACD + MA100 + Parabolic SAR
 
 
 
@@ -13,7 +13,11 @@ void OnTick()
    //double MaCurrent=iMA(NULL,0,MATrendPeriod,0,MODE_EMA,PRICE_CLOSE,1);
    // double MaPrevious=iMA(NULL,0,MATrendPeriod,0,MODE_EMA,PRICE_CLOSE,2);
 
-   double ma100 = iMA(NULL, 0, 100, 0, MODE_SMMA,PRICE_CLOSE, 1);
+   double ma100 = iMA(NULL, 0, 100, 0, MODE_SMA,PRICE_CLOSE, 1);
+   
+   
+   //double previsous_parabolicSAR = iSAR(NULL, 0, 0.02, 0.2, 2);
+   double current_parabolicSAR = iSAR(NULL, 0, 0.02, 0.2, 1);
 
 
    double atr = NormalizeDouble(iATR(NULL, 0, 14, 1),5);    
@@ -29,16 +33,22 @@ void OnTick()
    {  
       if(MacdPrevious < 0 && MacdCurrent > 0)
       {
-         if(ClosePrice > ma100)
+         if(current_parabolicSAR < ClosePrice)
          {
-            OrderSend(Symbol(),OP_BUY, 0.1, Ask, 10, NormalizeDouble(Bid-stop_loss, 5), NormalizeDouble(Bid+take_profit, 5));
-         }    
+            if(ClosePrice > ma100)
+            {
+               OrderSend(Symbol(),OP_BUY, 0.1, Ask, 10, NormalizeDouble(Bid-stop_loss, 5), NormalizeDouble(Bid+take_profit, 5));
+            }    
+         }
       }
       if (MacdPrevious > 0 && MacdCurrent < 0)
       {
-         if(ClosePrice < ma100)
+         if(current_parabolicSAR > ClosePrice)
          {
-            OrderSend(Symbol(),OP_SELL, 0.1, Bid, 10, NormalizeDouble(Ask+stop_loss,5), NormalizeDouble(Ask-take_profit,5));
+            if(ClosePrice < ma100)
+            {
+               OrderSend(Symbol(),OP_SELL, 0.1, Bid, 10, NormalizeDouble(Ask+stop_loss,5), NormalizeDouble(Ask-take_profit,5));
+            }
          }
       }
    }
